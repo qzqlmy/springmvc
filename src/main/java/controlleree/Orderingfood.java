@@ -584,6 +584,7 @@ public class Orderingfood extends BaseController {
     }
     @RequestMapping("weeklist")
     private void weeklist () {
+        //ggggggggggg
         List<Map> inforList = sqlSession.selectList("subject.queryweeklist");
        if(inforList.size()==0){
            sqlSession.update("subject.getUserCount");

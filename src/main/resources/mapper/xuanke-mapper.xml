@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xuanke">
+    <insert id="create" parameterType="model.xuanke" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO test.xuanke VALUES (NULL ,#{studentid},#{name},#{subject}
+       )
+    </insert>
+    <insert id="createHeadPortrait" parameterType="model.GetHeadPortrait" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO test.HeadPortrait VALUES (NULL ,#{username},#{headPortrait}
+        )
+    </insert>
+    <select id="queryAll" resultType="model.xuanke" >
+        SELECT * FROM test.xuanke
+    </select>
+
+    <select id="queryAlls" resultType="model.xuanke" parameterType="String">
+        SELECT * FROM test.xuanke WHERE studentid=#{studentid} ORDER BY id
+    </select>
+    <select id="queryHeadPortrait" resultType="model.GetHeadPortrait" parameterType="String">
+        SELECT * FROM test.HeadPortrait WHERE username=#{username} ORDER BY id
+    </select>
+    <select id="queryById" resultType="model.xuanke" parameterType="int">
+        SELECT *FROM test.xuanke WHERE id=#{id}
+    </select>
+    <select id="queryBystudentid" resultType="model.xuanke" parameterType="model.xuanke">
+        SELECT *FROM test.xuanke WHERE studentid=#{studentid} AND subject=#{subject}
+    </select>
+    <update id="modify" parameterType="model.xuanke" >
+        UPDATE test.xuanke SET studentid=#{studentid},subject=#{subject},name=#{name}
+        WHERE id=#{id}
+    </update>
+    <update id="modifyHeadPortrait" parameterType="model.GetHeadPortrait" >
+        UPDATE test.HeadPortrait SET HeadPortrait=#{HeadPortrait}
+        WHERE username=#{username}
+    </update>
+    <delete id="remove" parameterType="int">
+      DELETE FROM xuanke WHERE id=#{id}
+    </delete>
+</mapper>

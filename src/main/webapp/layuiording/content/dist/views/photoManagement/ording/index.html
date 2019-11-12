@@ -1,0 +1,205 @@
+<title>订单查询</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>订单管理</cite></a>
+        <a><cite>订单查询</cite></a>
+    </div>
+</div>
+
+<style>
+    /* 这段样式只是用于演示 */
+
+</style>
+
+
+<div class="layui-fluid" id="LAY-picManage-poster">
+
+    <div class="layui-card">
+        <div class="layui-tab-content">
+            <div class="layui-btn-group demoTable lay-mb15">
+                <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-useradmin-formlist">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">商品订单号</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="title" id="ording" placeholder="请输入商品订单号" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">商品名称</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="title" id="foodname" placeholder="请输入商品名称" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-inline" style="margin-top: 10px">
+                            <label class="layui-form-label">开始时间：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="starttime" placeholder="开始时间">
+                            </div>
+                        </div>
+                        <div class="layui-inline" style="margin-top: 10px">
+                            <label class="layui-form-label">商品名称：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="endttime" placeholder="结束时间">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button data-type="reload"  class="layui-btn layuiadmin-btn-admin" lay-submit lay-filter="LAY-user-back-search">
+                                <i class="layui-icon  layui-icon-search layuiadmin-button-btn"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+
+                    <table id="LAY-picManage-poster-all" lay-filter="LAY-picManage-poster-all" ></table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!--私有样式-->
+    <style>
+        .viewInfo {
+            padding: 30px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .viewInfo li {
+            margin-bottom: 15px;
+        }
+
+        .viewInfo li span {
+            display: inline-block;
+            width: 15%;
+            text-align: right;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        /*设置单元格高度，设置文本溢出时自动换行*/
+        #LAY-picManage-poster  .layui-table-body .layui-table-cell{
+            height:100px;
+            line-height:100px;
+            white-space:normal;
+        }
+
+    </style>
+    <script>
+
+        layui.use(['admin', 'table', 'util', 'layer', 'form', 'laydate', 'laytpl'], function () {
+            var $ = layui.$
+                , admin = layui.admin
+                , element = layui.element
+                , layer = layui.layer
+                , table = layui.table
+                , form = layui.form
+                , laydate = layui.laydate
+                , laytpl = layui.laytpl;
+
+
+            //日期范围
+            // laydate.render({
+            //     elem: '#test1'
+            //     ,range: true
+            // });
+            // laydate.render({
+            //     elem: '#test2'
+            //     ,range: true
+            // });
+            laydate.render({
+                elem: '#starttime'
+                ,type: 'datetime'
+            });
+
+            //结束日期时间选择器
+            laydate.render({
+                elem: '#endttime'
+                ,type: 'datetime'
+            });
+            element.render();
+            form.render(null, 'layadmin-useradmin-formlist');
+            //缩略图模板
+            var tplImg = function (d) {
+                console.log(d);
+                return '<img src="' + d.foodurl + '" style="height: 80px" >';
+            };
+
+
+
+            //全部消息
+            table.render({
+                elem: '#LAY-picManage-poster-all'
+                , url: '/Ordering/queryordinglista' //模拟接口
+                // , cellMinWidth: 130 //全局定义常规单元格的最小宽度
+                , page: true // 开启分页
+                ,id: 'testReload'
+                , cols: [[ // 表头
+                    {field: 'ordingid', width:180,title: '订单号',edit: 'text', templet: '<div>{{d.ordingid}}</div>'}
+                    , {field: 'foodname', width:120,title: '名称',edit: 'text', templet: '<div>{{d.foodname}}</div>'}
+
+                    , {field: 'foodprice', title: '价格',edit: 'text', templet: '<div>{{d.foodprice}}</div>'}
+                    , {field: 'foodcount', title: '数量',edit: 'text', templet: '<div>{{d.foodcount}}</div>'}
+                    , {field: 'listdate',width:180, title: '下单时间',edit: 'text', templet: '<div>{{d.listdate}}</div>'}
+                ]]
+                , skin: 'line'
+                , done: function (res, curr, count) {
+                    //无论是异步请求数据，还是直接赋值数据，都会触发该回调。可以利用该回调做一些表格以外元素的渲染。
+                    //如果是异步请求数据方式，res即为你接口返回的信息。
+                    //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                    console.log(res);
+
+                    //得到当前页码
+                    console.log(curr);
+
+                    //得到数据总量
+                    console.log(count);
+                }
+            });
+
+
+
+
+//        form.render(null, 'operate-form-group');
+            form.on('submit(component-form-demo1)', function (data) {
+                console.log(data)
+                layer.alert(JSON.stringify(data.field), {
+                    title: '最终的提交信息'
+                })
+                return false;
+            });
+
+            var $ = layui.$, active = {
+                reload: function(){
+                    var foodname = $('#foodname');
+
+
+                    //执行重载
+                    table.reload('testReload', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                        ,where: {
+                            key: {
+                                ordingid: $('#ording').val(),
+                                foodname:$('#foodname').val(),
+                                starttime:$('#starttime').val(),
+                                endttime:$('#endttime').val()
+                            }
+                        }
+                    }, 'data');
+                }
+            };
+            $('.layui-fluid .layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+
+        });
+    </script>

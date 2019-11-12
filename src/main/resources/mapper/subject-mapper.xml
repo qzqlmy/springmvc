@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="subject">
+    <insert id="create" parameterType="model.subject" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO test.subject VALUES (NULL ,#{subjectid},#{subject},#{Classplace}
+        ,#{Classtime},#{Classhour})
+    </insert>
+    <insert id="createfood" parameterType="HashMap" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO test.food VALUES (#{foodmodel},#{foodname},#{foodurl},#{price})
+    </insert>
+    <select id="queryAllss" resultType="model.subjects">
+        SELECT t.studentid,t.name,t.classname,s.subject FROM student t,xuanke x ,subject s  WHERE t.studentid=x.studentid and x.subject=s.subjectid;
+
+    </select>
+    <select id="queryAll" resultType="model.subject">
+        SELECT * FROM test.subject limit 10
+    </select>
+    <select id="queryAllcount" resultType="model.subject">
+        SELECT * FROM test.subject
+    </select>
+    <select id="queryById" resultType="model.subject" parameterType="int">
+        SELECT *FROM test.subject WHERE id=#{id}
+    </select>
+    <select id="queryBypage" resultType="model.subject" parameterType="HashMap">
+        SELECT * FROM test.subject limit #{start},#{end};
+    </select>
+    <select id="getSubject" resultType="model.subject" parameterType="HashMap">
+        SELECT * FROM test.subject t
+        <where>
+
+            <if test=" subject != null and subject != ''">
+                and t.subject =#{subject}
+            </if>
+
+            <if test="subjectnum!= null and subjectnum!= ''">
+                and t.subjectid =${subjectnum}
+            </if>
+
+        </where>
+        limit #{start},#{end};
+    </select>
+    <select id="getSubjectcon" resultType="model.subject" parameterType="HashMap">
+        SELECT * FROM test.subject t
+        <where>
+
+            <if test=" subject != null and subject != ''">
+                and t.subject =#{subject}
+            </if>
+
+            <if test="subjectnum!= null and subjectnum!= ''">
+                and t.subjectid =${subjectnum}
+            </if>
+
+        </where>
+
+    </select>
+
+    <select id="exportAll" resultType="HashMap" parameterType="HashMap">
+        SELECT t.*,
+        '课程编号,科目,上课地点,上课时间,课时'reporthead,
+        'subjectid,subject,classplace,classtime,classhour'reportfield,
+        '课程表'filename
+        FROM test.subject t
+        <where>
+
+            <if test=" subject != null and subject != ''">
+                and t.subject =#{subject}
+            </if>
+
+            <if test="subjectnum!= null and subjectnum!= ''">
+                and t.subjectid =${subjectnum}
+            </if>
+
+        </where>
+
+    </select>
+    <select id="queryrxfood" resultType="HashMap" parameterType="HashMap">
+        SELECT t.* FROM test.food t WHERE t.foodmodel=${foodmodel}
+  </select>
+    <select id="queryhcfood" resultType="HashMap" parameterType="HashMap">
+        SELECT t.* FROM test.food t WHERE t.foodmodel=${foodmodel}
+    </select>
+    <select id="queryscfood" resultType="HashMap" parameterType="HashMap">
+        SELECT t.* FROM test.food t WHERE t.foodmodel=${foodmodel}
+    </select>
+    <select id="querylcfood" resultType="HashMap" parameterType="HashMap">
+        SELECT t.* FROM test.food t WHERE t.foodmodel=${foodmodel}
+    </select>
+    <select id="foodlistone" resultType="HashMap" parameterType="String">
+        SELECT t.* FROM test.food t WHERE t.foodname=#{foodname}
+    </select>
+    <select id="querycxfood" resultType="HashMap" parameterType="HashMap">
+        SELECT t.* FROM test.food t WHERE t.foodmodel=${foodmodel}
+    </select>
+    <select id="querylistfood" resultType="HashMap" parameterType="HashMap">
+        SELECT * ,
+  CASE foodmodel
+  WHEN '1' THEN '热销'
+  WHEN 2 THEN '荤菜'
+  WHEN 3 THEN '素菜'
+  WHEN 4 THEN '凉菜'
+  WHEN 5 THEN '今日促销'
+  ELSE '其他' END  foodmode2 from food t
+        <where>
+
+            <if test=" foodmodel != null and foodmodel != ''">
+                and t.foodmodel =#{foodmodel}
+            </if>
+
+            <if test="foodname!= null and foodname!= ''">
+                and t.foodname =#{foodname}
+            </if>
+            <if test="price!= null and price!= ''">
+                and t.price =#{price}
+            </if>
+
+        </where>
+        <if test="start!= null and start!= ''">
+
+            limit ${start},${end};
+        </if>
+        <if test="index!= null and index!= ''">
+            limit 0,5;
+        </if>
+
+    </select>
+    <update id="modifyfood" parameterType="HashMap" >
+        UPDATE test.food SET foodmodel=#{foodmodel},foodurl=#{foodurl},
+        price=#{price}
+        WHERE foodname=#{foodname}
+    </update>
+    <update id="modify" parameterType="model.subject" >
+        UPDATE test.subject SET subjectid=#{subjectid},subject=#{subject},
+        Classplace=#{classplace},
+        Classplace=#{classtime},
+        Classplace=#{classhour}
+        WHERE id=#{id}
+    </update>
+    <delete id="remove" parameterType="int">
+      DELETE FROM subject WHERE id=#{id}
+    </delete>
+    <delete id="removefood" parameterType="String">
+        DELETE FROM food WHERE foodname=#{foodname}
+    </delete>
+    <insert id="ordingcreate" parameterType="java.util.List">
+        insert into test.odinglists(
+        ordingid,
+        foodname,
+        foodprice,
+        foodcount,
+        listdate
+        )
+        values
+        <foreach collection="list" item="item" index= "index" separator =",">
+            (
+            #{item.ordingid},
+            #{item.foodname},
+            #{item.foodprice},
+            #{item.foodcount},
+            #{item.listdate}
+            )
+        </foreach>
+    </insert>
+    <select id="selording" resultType="HashMap" parameterType="HashMap">
+        SELECT count(ordingid) ordingcount,sum(price) ordingprice from test_view_4 t WHERE str_to_date(ordingdate,"%Y-%m-%d ")>date_sub(curdate(),interval 1 day);
+
+    </select>
+    <select id="selording2" resultType="HashMap" parameterType="HashMap">
+        SELECT count(ordingid) ordingcount,sum(price) ordingprice from test_view_4 t WHERE
+       str_to_date(ordingdate,"%Y-%m-%d %T") BETWEEN
+  str_to_date(CONCAT_WS(' ',curdate(),'00:00:01'),"%Y-%m-%d %T") - interval 24 hour AND
+  str_to_date(CONCAT_WS(' ',curdate(),'00:00:01'),"%Y-%m-%d %T") ;
+
+    </select>
+    <select id="querylistcount" resultType="HashMap" parameterType="HashMap">
+        SELECT *  from odinglists t
+        <where>
+            <if test="foodname!= null and foodname!= ''">
+                and t.foodname =#{foodname}
+            </if>
+            <if test="ordingid!= null and ordingid!= ''">
+                and t.ordingid =#{ordingid}
+            </if>
+            <if test="starttime!= null and starttime!= ''">
+                <if test="endttime!= null and endttime!= ''">
+                    and str_to_date(t.listdate,"%Y-%m-%d %T") BETWEEN str_to_date(#{starttime},"%Y-%m-%d %T") and str_to_date(#{endttime},"%Y-%m-%d %T")
+                </if>
+            </if>
+
+        </where>
+        ORDER BY str_to_date(listdate,"%Y-%m-%d %T") desc
+        <if test="start!= null and start!= ''">
+
+            limit ${start},${end};
+        </if>
+
+
+    </select>
+    <select id="querylistxl" resultType="HashMap" parameterType="HashMap">
+        select t.foodname ,sum(foodcount) countt from odinglists t
+          GROUP BY t.foodname  ORDER BY countt   ;
+    </select>
+    <select id="queryweeklist" resultType="HashMap" parameterType="HashMap">
+       SELECT  * from listtj where str_to_date(listdate,"%Y-%m-%d")=curdate()-interval 1 DAY ;  ;
+    </select>
+    <update id="getUserCount" statementType="CALLABLE">
+    {call test.num_from_employe}
+   </update>
+    <select id="weeklist1" resultType="HashMap" parameterType="HashMap">
+    SELECT  * from listtj ORDER BY listdate  ;
+</select>
+    <select id="queryfristmenu" resultType="HashMap" parameterType="HashMap">
+        SELECT * from fristmenu t
+        <where>
+            <if test="tile!= null and tile!= ''">
+                and t.tile =#{tile}
+            </if>
+
+        </where>;
+    </select>
+    <select id="querysecondmenu" resultType="HashMap" parameterType="HashMap">
+        SELECT * from secondmenu where fristmenu=#{menu}
+    </select>
+    <insert id="createfristmenu" parameterType="HashMap" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO fristmenu (menu, tile, icon, createdate) VALUES (#{menu},#{tile},#{icon},sysdate())
+    </insert>
+    <insert id="createsecondmenu" parameterType="HashMap" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO secondmenu (fristmenu ,name, title,  jump, createdate) VALUES (#{tile},#{menu},#{fullname2},#{jump},sysdate())
+    </insert>
+    <select id="querymenu" resultType="HashMap" parameterType="HashMap">
+        SELECT * from secondmenu where title=#{tile}
+    </select>
+    <delete id="removemenu1" parameterType="String">
+        DELETE FROM fristmenu WHERE tile=#{title}
+    </delete>
+    <delete id="removemenu2" parameterType="String">
+        DELETE FROM secondmenu WHERE title=#{title}
+    </delete>
+</mapper>

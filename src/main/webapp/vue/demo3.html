@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <div class="parent">
+        <h3>父组件Parent数据</h3>
+        <ul>
+            <li>
+                <label>姓名</label>
+                <span>{{ name }}</span>
+                <input type="text" v-model="name" />
+            </li>
+            <li>
+                <label>工作</label>
+                <span>{{ job }}</span>
+                <input type="text" v-model="job" />
+            </li>
+        </ul>
+    </div>
+    <child :my-name="name" :my-job="job"></child>
+</div>
+
+<template id="child">
+    <div class="child">
+        <h3>子组件Child数据</h3>
+        <ul>
+            <li>
+                <label>姓名</label>
+                <span>{{ myName }}</span>
+                <input type="text" v-model="myName" />
+            </li>
+            <li>
+                <label>工作</label>
+                <span>{{ myJob }}</span>
+                <input type="text" v-model="myJob" />
+            </li>
+        </ul>
+    </div>
+</template>
+</body>
+    <script type="text/javascript">
+        var parent = new Vue({
+            el: '#app',
+            data: function() {
+                return {
+                    name: 'WEBING',
+                    job: 'FE'
+                }
+            },
+
+            components: {
+                'child': {
+                    template: '#child',
+                    props: ['myName', 'myJob']
+                }
+            }
+        })
+
+    </script>
+</html>

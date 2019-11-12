@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>添加数据</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../../../../../content/layui/rc/css/layui.css" media="all">
+    <style>
+        body {
+            padding: 10px;
+            font-size: 14px;
+            background: #fff;
+            width: 95%;
+            margin: 0 auto;
+            font-size: 14px;
+            line-height: 20px;
+            overflow: scroll;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        input {
+            border: 1px solid #999;
+            padding: 5px 10px;
+            margin: 0 10px 10px 0;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="layui-card-body" style="padding: 15px;">
+    <form class="layui-form" action="" lay-filter="operate-form-group">
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" id="foodname" lay-verify="title" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+        <input id="hhff" type="text" style="display: none"/>
+        <input id="hh" style="display: none" type="file" onchange="setImg(this);"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品图片</label>
+            <div class="layui-upload-drag" id="goodsPic">
+
+                <i id="sctp" style="display: block" class="layui-icon"></i>
+                <img style="display: none" id="phk"
+                     src="" width="100" height="100"/>
+                <p id="uplode">点击上传，或将文件拖拽到此处</p>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品类型</label>
+            <div class="layui-input-block">
+                <select id="test" class="js-example-basic-multiple" name='local' >
+                    <option value='0'>请选择</option>
+                    <option value='1'>热销</option>
+                    <option value='2'>荤菜</option>
+                    <option value='3'>素菜</option>
+                    <option value='4'>凉菜</option>
+                    <option value='5'>今日促销</option>
+
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">商品价格</label>
+            <div class="layui-input-block">
+                <input type="text" name="hot" id="price" lay-verify="number" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <div class="layui-footer">
+                    <button class="layui-btn" lay-submit="" id="submitdd" lay-filter="component-form-demo1">保存</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="../../../../../content/layui/rc/layui.js"></script>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js" ></script>
+<script src="js/jquery.tips.js"></script>
+
+<script>
+
+    layui.use(['layer','form', 'laydate','upload'], function(){
+        var $ = layui.$
+            ,layer = layui.layer
+            ,index = parent.layer.getFrameIndex(window.name) //获取窗口索引
+            ,element = layui.element
+            ,laydate = layui.laydate
+            ,upload = layui.upload
+            ,form = layui.form;
+
+        form.render(null, 'operate-form-group');
+        laydate.render({
+            elem: '#LAY-posterAdd-createTime'
+        });
+        laydate.render({
+            elem: '#LAY-posterAdd-startTime'
+        });
+
+        //单张图片上传
+        var uploadInst = upload.render({
+            elem: '#t1'
+            , url: '/upload/'
+            , before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {//参数分别代表：文件索引，文件对象，文件base64位编码
+                    console.log(file);
+                    $('#text1').text(file.name);
+                    $('#timg1').attr('src', result); //图片链接（base64）
+                });
+            }
+            , done: function (res, index, upload) {//上传后的回调，参数分别为：服务端响应信息、当前文件的索引、重新上传的方法
+                //如果上传失败
+                if (res.code > 0) {
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+            }
+            , error: function (index, upload) {//参数分别代表：当前文件的索引、重新上传的方法
+                //演示失败状态，并实现重传
+                var demoText = $('#try1');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function () {
+                    uploadInst.upload();
+                });
+            }
+        });
+        $('#timg1').hide();
+        $("#t1").on({//鼠标移入显示缩略图
+            mouseover: function () {
+                $('#timg1').show();
+            },
+            mouseout: function () {
+                $('#timg1').hide();
+            }
+        });
+
+
+
+
+
+
+        /* 自定义验证规则 */
+        form.verify({
+            title: function(value){
+
+            }
+            ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+            ,content: function(value){
+                layedit.sync(editIndex);
+            }
+        });
+
+        /* 监听提交 */
+        // form.on('submit(component-form-demo1)', function(data){
+        //     console.log(JSON.stringify(data.field));
+        //     var oldData =  parent.layui.table.cache["LAY-app-table-all"];
+        //     var data1=JSON.stringify(data.field);
+        //     oldData.push(data1);
+        //     parent.layui.table.reload('LAY-app-table-all',{
+        //         data : oldData
+        //     });
+        //
+        //     parent.layer.close(index);
+        //     return false;
+        // });
+
+        $('.layui-btn-container .layui-btn').on('click', function(){
+            var othis = $(this)
+                ,type = othis.data('type');
+            active[type] && active[type].call(this);
+        });
+    });
+    function imgBig(_this){
+        _this.className = "imgBig";
+        _this.width = "300";
+        _this.height = "300";
+    }
+
+    //商品图片放小
+    function imgSmall(_this){
+        _this.className = "imgSmall";
+        _this.width = "100";
+        _this.height = "100";
+    }
+</script>
+
+<script type="text/javascript"  >
+    var loadingFlag;
+    $("#uplode").click(function () {
+
+        $("#hh").click();
+
+
+    })
+    function setImg(obj) {
+        var f = $(obj).val();
+        var sf = $("#test").val();
+        var aa= $("#foodname").val();
+        var price= $("#price").val();
+        console.log(sf+aa);
+        if (f == null || f == undefined || f == '') {
+            return false;
+        }
+        if (!/\.(?:png|jpg|bmp|gif|PNG|JPG|BMP|GIF)$/.test(f)) {
+            alert("类型必须是图片(.png|jpg|bmp|gif|PNG|JPG|BMP|GIF)");
+            $(obj).val('');
+            return false;
+        }
+        var data = new FormData();
+        console.log(data);
+        $.each($(obj)[0].files, function (i, file) {
+            data.append('file', file);
+            console.log(file);
+        });
+        console.log(data);
+        $.ajax({
+            type: "POST",
+            url: "/Uploader/uploadImg",
+            data: data,
+            cache: false,
+            contentType: false,    //不可缺
+            processData: false,    //不可缺
+            dataType: "json",
+            beforeSend: function (XMLHttpRequest) {
+                //注意，layer.msg默认3秒自动关闭，如果数据加载耗时比较长，需要设置time
+                loadingFlag= layer.msg('正在上传，请稍候……', { icon: 16, shade: 0.01,shadeClose:false,time:60000 });
+            },
+            success: function (ret) {
+                layer.close(loadingFlag);
+                console.log(ret);
+                if (ret.code == 0) {
+                    $("#hhff").val(ret.result.url);//将地址存储好
+                    $("#phk").attr("src", ret.result.url);//显示图片
+                    $("#phk").css('display','block');
+                    $("#sctp").css('display','none');
+                } else {
+                    alertError(ret.message);
+                    $("#url").val("");
+                    $(obj).val('');
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                layer.close(loadingFlag);
+                alert("上传失败，请检查网络后重试");
+            }
+        });
+
+    }
+
+    $("#submitdd").click(function () {
+        var url=$("#hhff").val();
+        var sf = $("#test").val();
+        var aa= $("#foodname").val();
+        var price= $("#price").val();
+
+        if ($("#foodname").val() == "") {
+
+            $("#foodname").tips({
+                side: 1,
+                msg: '请输入菜名',
+                bg: '#AE81FF',
+                time: 3
+            });
+            return false;
+        }
+        if ($("#price").val() == "") {
+
+            $("#price").tips({
+                side: 1,
+                msg: '请输入价格',
+                bg: '#AE81FF',
+                time: 3
+            });
+            return false;
+        }
+        $.ajax({
+            url: "/Ordering/foodcreate",
+            type: 'post',
+            data: {"leixin": sf, "foodname": aa, "src": url, "price":price},
+            dataType: "json",
+            beforeSend: function (XMLHttpRequest) {
+                //注意，layer.msg默认3秒自动关闭，如果数据加载耗时比较长，需要设置time
+                loadingFlag= layer.msg('正在修改数据，请稍候……', { icon: 16, shade: 0.01,shadeClose:false,time:60000 });
+            },
+            success: function (result) {
+                layer.close(loadingFlag);
+                if (result.code ==0) {
+                    layer.open({
+                        type: 1,
+                        area: ['260px', '140px'],
+                        fixed: false,
+                        maxmin: true,
+                        content: '<div style="padding: 20px 100px;">'+ '创建成功!' +'</div>'
+                    });
+                    layer.msg('创建成功');
+                    window.parent.location.reload();
+
+                } else {
+                    layer.open({
+                        type: 1,
+                        area: ['260px', '140px'],
+                        fixed: false,
+                        maxmin: true,
+                        content: '<div style="padding: 20px 100px;">'+ '创建失败!' +'</div>'
+                    });
+                }
+            },error: function (error) {
+                layer.close(loadingFlag);
+                layer.open({
+                    type: 1,
+                    area: ['260px', '140px'],
+                    fixed: false,
+                    maxmin: true,
+                    content: '<div style="padding: 20px 100px;">'+ '创建失败!' +'</div>'
+                });
+            }
+
+        });
+    });
+</script>
+</body>
+</html>

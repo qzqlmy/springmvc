@@ -1,0 +1,104 @@
+.login-form{
+
+    font-size:2em;
+    color:#8B814C;
+    font-weight:100;
+    text-transform:uppercase;
+    text-align:center;
+    margin-bottom:2em;
+    padding:100px 0px 0px 0px;
+}
+.login-ic {
+    background: rgba(255, 255, 255, 0.32);
+    margin-bottom:1.5em;
+    padding: 8px;
+}
+.login-ic input[type="text"],.login-ic  input[type="password"] {
+    float: left;
+    background: none;
+    outline: none;
+    font-size: 15px;
+    font-weight: 400;
+    color: #737373;
+    padding: 10px 16px;
+    border: none;
+    border-left: 1px solid #737373;
+    width: 82%;
+    display: inline-block;
+    margin-left: 7px;
+}
+.log-bwn {
+    text-align: center;
+}
+.snnnn {
+    font-size: 15px;
+    font-weight: 700;
+    color: #9AC0CD;
+    padding: 13px 0;
+    background: #9ac0cd;
+    display: inline-block;
+    width: 100%;
+    outline:none;
+    border:2px solid #9AC0CD;
+    cursor:pointer;
+    text-transform:uppercase;
+}
+.log-bwn input[type="submit"]:hover{
+    transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    border:2px solid #6E8B3D;
+}
+
+
+.page {
+
+    display: inline-block;
+
+    padding: 0;
+    width: 50%;
+   right: 0;
+    margin: 0;
+    position: absolute;
+    bottom: 0px;
+
+}
+
+.page li {display: inline;
+
+}
+
+.page li  {
+
+    color: black;
+
+    float: left;
+
+    padding: 8px 16px;
+
+    text-decoration: none;
+
+    transition: background-color .3s;
+
+    border: 1px solid #bdbdbd;
+
+}
+
+.page .active {
+
+    background-color: #4CAF50;
+
+    color: white;
+
+    border: 1px solid white;
+
+}
+
+.page li:hover:not(.active) {background-color: #4CAF50;
+    color: white;
+
+    border: 1px solid #4CAF50;
+}
+
+

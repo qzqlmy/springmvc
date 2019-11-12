@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layer iframe 示例</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../../../../../content/layui/rc/css/layui.css" media="all">
+    <style>
+        body {
+            padding: 10px;
+            font-size: 14px;
+            background: #fff;
+            width: 95%;
+            margin: 0 auto;
+            font-size: 14px;
+            line-height: 20px;
+            overflow: scroll;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        input {
+            border: 1px solid #999;
+            padding: 5px 10px;
+            margin: 0 10px 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layui-card-body" style="padding: 15px;">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" id="foodname1"  lay-verify="title" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <input id="hhff" type="text" style="display: none"/>
+            <input id="hh" style="display: none" type="file" onchange="setImg(this);"/>
+            <label class="layui-form-label">商品图片</label>
+            <div class="layui-upload-drag" id="goodsPic">
+
+                <i id="sctp" style="display: none" class="layui-icon"></i>
+                <img  id="phk"
+                      src=""  width="100" height="100"/>
+                <p id="uplode">点击上传，或将文件拖拽到此处</p>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品类型</label>
+            <div class="layui-input-block">
+                <select id="foodmode2" class="js-example-basic-multiple" name='local' >
+                    <option value='0'>请选择</option>
+                    <option value='1'>热销</option>
+                    <option value='2'>荤菜</option>
+                    <option value='3'>素菜</option>
+                    <option value='4'>凉菜</option>
+                    <option value='5'>今日促销</option>
+
+                </select>
+
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">商品价格</label>
+                <div class="layui-input-block">
+                    <input type="text" name="hot" id="price2"  lay-verify="number" autocomplete="off"  class="layui-input">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <div class="layui-footer">
+                    <button class="layui-btn" lay-submit="" id="editsubmit" lay-filter="component-form-demo1">保存</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </div>
+
+</div>
+
+<script src="../../../../../content/layui/rc/layui.js"></script>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js" ></script>
+<script type="text/javascript" src="js/jquery.tips.js" ></script>
+<script type="text/html" id="localtion">
+    <div>
+        <select name="location" lay-filter="aihao">
+            {{#  layui.each(d.list, function(index, item){ }}
+            <option value="{{item.loaction}}">{{item.loaction}}</option>
+            {{#  }); }}
+        </select>
+    </div>
+</script>
+<script>
+    var loadingFlag;
+    $("#editsubmit").click(function () {
+
+        var url=$("#hhff").val();
+        var sf = $("#foodmode2").val();
+        var aa= $("#foodname1").val();
+        var price= $("#price2").val();
+        if ($("#foodname1").val() == "") {
+
+            $("#foodname1").tips({
+                side: 1,
+                msg: '请输入菜名',
+                bg: '#AE81FF',
+                time: 3
+            });
+            return false;
+        }
+        if ($("#foodmode2").val() == ""||$("#foodmode2").val()=="请选择") {
+
+            $("#foodmode2").tips({
+                side: 1,
+                msg: '请选择类型',
+                bg: '#AE81FF',
+                time: 3
+            });
+            return false;
+        }
+        if ($("#price2").val() == "") {
+
+            $("#price2").tips({
+                side: 1,
+                msg: '请输入价格',
+                bg: '#AE81FF',
+                time: 3
+            });
+            return false;
+        }
+
+
+        $.ajax({
+            url: "/Ordering/foodupdate",
+            type: 'post',
+            data: {"leixin": sf, "foodname": aa, "src": url, "price":price},
+            dataType: "json",
+            beforeSend: function (XMLHttpRequest) {
+                //注意，layer.msg默认3秒自动关闭，如果数据加载耗时比较长，需要设置time
+                loadingFlag= layer.msg('正在修改数据，请稍候……', { icon: 16, shade: 0.01,shadeClose:false,time:60000 });
+            },
+            success: function (result) {
+                layer.close(loadingFlag);
+                if (result.code ==0) {
+                    layer.msg('已修改');
+                    window.parent.location.reload();
+
+                } else {
+                    layer.open({
+                        type: 1,
+                        area: ['260px', '140px'],
+                        fixed: false,
+                        maxmin: true,
+                        content: '<div style="padding: 20px 100px;">'+ '修改失败!' +'</div>'
+                    });
+                }
+            },error: function (error) {
+                layer.open({
+                    type: 1,
+                    area: ['260px', '140px'],
+                    fixed: false,
+                    maxmin: true,
+                    content: '<div style="padding: 20px 100px;">'+ '修改失败!' +'</div>'
+                });
+            }
+
+        });
+
+
+    })
+    $("#uplode").click(function () {
+
+        $("#hh").click();
+
+
+    })
+    function setImg(obj) {
+        var f = $(obj).val();
+        var sf = $("#test").val();
+        var aa= $("#foodname").val();
+        var price= $("#price").val();
+        console.log(sf+aa);
+        if (f == null || f == undefined || f == '') {
+            return false;
+        }
+        if (!/\.(?:png|jpg|bmp|gif|PNG|JPG|BMP|GIF)$/.test(f)) {
+            alert("类型必须是图片(.png|jpg|bmp|gif|PNG|JPG|BMP|GIF)");
+            $(obj).val('');
+            return false;
+        }
+        var data = new FormData();
+        console.log(data);
+        $.each($(obj)[0].files, function (i, file) {
+            data.append('file', file);
+            console.log(file);
+        });
+        console.log(data);
+        $.ajax({
+            type: "POST",
+            url: "/Uploader/uploadImg",
+            data: data,
+            cache: false,
+            contentType: false,    //不可缺
+            processData: false,    //不可缺
+            dataType: "json",
+            beforeSend: function (XMLHttpRequest) {
+                //注意，layer.msg默认3秒自动关闭，如果数据加载耗时比较长，需要设置time
+                loadingFlag= layer.msg('正在上传图片，请稍候……', { icon: 16, shade: 0.01,shadeClose:false,time:60000 });
+            },
+            success: function (ret) {
+                layer.close(loadingFlag);
+                console.log(ret);
+                if (ret.code == 0) {
+                    $("#hhff").val(ret.result.url);//将地址存储好
+                    $("#phk").attr("src", ret.result.url);//显示图片
+                    $("#phk").css('display','block');
+                    $("#sctp").css('display','none');
+                } else {
+                    alertError(ret.message);
+                    $("#url").val("");
+                    $(obj).val('');
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                layer.close(loadingFlag);
+                alert("上传失败，请检查网络后重试");
+            }
+        });
+
+    }
+    //商品图片放大
+    function imgBig(_this){
+        _this.className = "imgBig";
+        _this.width = "300";
+        _this.height = "300";
+    }
+    var newID = sessionStorage.getItem('ID');
+
+    //商品图片放小
+    function imgSmall(_this){
+        _this.className = "imgSmall";
+        _this.width = "100";
+        _this.height = "100";
+    }
+    layui.use(['layer','form', 'laydate','laytpl'], function(){
+        var $ = layui.$
+            ,layer = layui.layer
+            ,index = parent.layer.getFrameIndex(window.name) //获取窗口索引
+            ,element = layui.element
+            ,laydate = layui.laydate
+            ,form = layui.form
+            ,laytpl = layui.laytpl;
+
+        var active = {
+
+        };
+        var url = decodeURI(location.search.substring(1));
+
+        var foodname = url.split('&')[0].split('=')[1];
+        var foodmodel = url.split('&')[1].split('=')[1];
+        var foodurl = url.split('&')[2].split('=')[1];
+        var price = url.split('&')[3].split('=')[1];
+
+        $("#foodname1").val(foodname)
+        $("#price2").val(price)
+        $("#foodmode2").val(foodmodel)
+        $("#phk").attr("src", foodurl);//显示图片
+        $("#hhff").val(foodurl);
+        // 此处是假数据，真实情况调接口数据
+        var data = { //数据
+            "title":"Layui常用模块"
+            ,"list":[{"loaction":"郑州"},{"loaction":"开封"},{"loaction":"南阳"},{"loaction":"珠海"},{"loaction":"北京"}]
+        };
+
+//        admin.req({
+//            url: './content/json/table/tableSelectData.js', //实际使用请改成服务端真实接口
+//            type:'get'
+//            ,data: obj.field
+//            ,success: function(res){
+//                console.log(res)
+//
+//
+//
+//            }
+//        });
+
+        // var getTpl = $("#localtion")[0].innerHTML
+        //     ,view = $("#viewLocal")[0];
+        //     console.log(data)
+        // laytpl(getTpl).render(data, function(html){
+        //     view.innerHTML = html;
+        // }); // 渲染下拉菜单的数据
+
+        // form.render(null, 'operate-form-group');
+        //
+        // laydate.render({
+        //     elem: '#LAY-component-form-group-date'
+        // });
+        /* 自定义验证规则 */
+        form.verify({
+            title: function(value){
+                // if(value.length < 5){
+                //     return '标题至少得5个字符啊';
+                // }
+            }
+            ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+            ,content: function(value){
+                layedit.sync(editIndex);
+            }
+        });
+
+        /* 监听提交 */
+        // form.on('submit(component-form-demo1)', function(data){
+        //     console.log(JSON.stringify(data.field));
+        //     parent.layui.updateitem(JSON.stringify(data.field));
+        //     parent.layer.close(index);
+        //     return false;
+        // });
+        //
+        // $('.layui-btn-container .layui-btn').on('click', function(){
+        //     var othis = $(this)
+        //         ,type = othis.data('type');
+        //     active[type] && active[type].call(this);
+        // });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+    {{msg1}}
+    {{num1}}
+</div>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#app',
+        data: {
+           msg:"hello vue",
+            num: 9
+        },
+        computed: {
+            msg1: function() {
+                return  this.msg + " - 学的不仅是技术，更是梦想！";
+            },
+            num1: function(){
+
+                if(this.num % 2==0){
+                    return  this.num + " :oushu";
+                }else{
+                    return  this.num + " :jishu";
+                }
+
+            }
+        },
+
+    })
+</script>
+</body>
+</html>

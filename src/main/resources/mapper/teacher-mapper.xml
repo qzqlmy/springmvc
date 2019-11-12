@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="teacher">
+    <insert id="create" parameterType="model.teacher" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO test.teacher VALUES (NULL ,#{email},#{password})
+    </insert>
+    <select id="login" parameterType="model.teacher" resultType="model.teacher">
+        SELECT * FROM teacher WHERE email=#{email} AND password=#{password}
+    </select>
+    <select id="logins" parameterType="model.teacher" resultType="model.teacher">
+        SELECT * FROM studentlogin WHERE email=#{email} AND password=#{password}
+    </select>
+    <select id="queryAll" resultType="model.teacher">
+        SELECT * FROM test.teacher ORDER BY id
+    </select>
+    <select id="queryById" resultType="model.teacher" parameterType="int">
+        SELECT *FROM test.teacher WHERE id=#{id}
+    </select>
+    <update id="modify" parameterType="model.teacher" >
+        UPDATE test.teacher SET email=#{email},password=#{password}
+        WHERE id=#{id}
+    </update>
+    <delete id="remove" parameterType="int">
+      DELETE FROM teacher WHERE id=#{id}
+    </delete>
+</mapper>

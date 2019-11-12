@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="student">
+    <insert id="create" parameterType="model.student" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO test.student VALUES (NULL ,#{studentid},#{name},#{classname}
+        )
+    </insert>
+
+    <select id="queryAll" resultType="model.student">
+        SELECT * FROM test.student ORDER BY id
+    </select>
+    <select id="queryById" resultType="model.student" parameterType="int">
+        SELECT *FROM test.student WHERE id=#{id}
+    </select>
+    <update id="modify" parameterType="model.student" >
+        UPDATE test.subject SET subjectid=#{subjectid},name=#{name},
+        classname=#{classname}
+
+        WHERE id=#{id}
+    </update>
+    <delete id="remove" parameterType="int">
+      DELETE FROM subject WHERE id=#{id}
+    </delete>
+</mapper>

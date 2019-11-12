@@ -1,0 +1,402 @@
+
+<title>菜单管理</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>部门管理</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid" id="LAY-app-table">
+    <div class="layui-card layui-row layui-col-space15" style="padding: 15px;">
+        <div class="orgbox layui-col-md2">
+            <ul id="demo2"></ul>
+        </div>
+        <div class="site-tips layui-col-md10" id="demo2-view">
+            <div id="viewForm">
+                <form class="layui-form" action="" lay-filter="component-form-element">
+                    <input type="text" name="model" style="display: none" lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="1">
+
+                    <div class="layui-form-item">
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">菜单：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="fullname1" lay-verify="required" placeholder="" autocomplete="off" class="layui-input" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-row layui-col-space10 layui-form-item">
+
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">页面路径：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="fullname" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="layui-row layui-col-space10 layui-form-item">
+
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">菜单图标：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="menuicon" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <!--<button class="layui-btn" lay-submit lay-filter="component-form-element">立即提交</button>-->
+                            <button class="layui-btn" lay-submit lay-filter="component-form-element">创建一级菜单</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script id="formBox" type="text/html">
+    <div></div>
+    <form class="layui-form" action="" lay-filter="component-form-element">
+        <input type="text" name="model" style="display: none" lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="2">
+        <button class="layui-btn" style="margin-bottom: 20px" lay-submit lay-filter="component-form-elemen">添加二级菜单</button>
+        <button class="layui-btn" style="margin-bottom: 20px" lay-submit lay-filter="component-form-elem">删除</button>
+        <div class="layui-form-item" >
+            <div class="layui-col-lg6">
+                <label class="layui-form-label">菜单名称：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="fullname1" lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{{d.tile}}">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-row layui-col-space10 layui-form-item">
+
+            <div class="layui-col-lg6">
+                <label class="layui-form-label">路径名称：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="fullname" lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{{d.menu}}">
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-row layui-col-space10 layui-form-item">
+
+            <div class="layui-col-lg6">
+                <label class="layui-form-label">图标：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="fullname" lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{{d.icon}}">
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+
+                <button class="layui-btn" lay-submit lay-filter="component-form-element">保存</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</script>
+<script id="formBox1" type="text/html">
+    <div></div>
+    <form class="layui-form" action="" lay-filter="component-form-element">
+        <input type="text" name="model" style="display: none" lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="3">
+        <button class="layui-btn" lay-submit lay-filter="component-form-elem">删除</button>
+
+        <div class="layui-form-item" >
+            <div class="layui-col-lg6">
+                <label class="layui-form-label">菜单名称：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="fullname1" lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{{d.title}}">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-row layui-col-space10 layui-form-item">
+
+            <div class="layui-col-lg6">
+                <label class="layui-form-label">路径名称：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="fullname" lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{{d.name}}">
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-row layui-col-space10 layui-form-item">
+
+            <div class="layui-col-lg6">
+                <label class="layui-form-label">页面路径：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="jump"  class="layui-input" value="{{d.jump}}">
+                </div>
+            </div>
+
+        </div>
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">是否启用：</label>-->
+            <!--<div class="layui-input-block">-->
+                <!--<input type="checkbox" name="marriage" lay-skin="switch" lay-text="是|否">-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+
+                <button class="layui-btn" lay-submit lay-filter="component-form-element">保存</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</script>
+<script id="formBox2" type="text/html">
+    <div></div>
+    <form class="layui-form" action="" lay-filter="component-form-element">
+        <input type="text" name="model" style="display: none" lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="4">
+        <div class="layui-form-item" hidden="hidden">
+            <div class="layui-col-lg6">
+                <label class="layui-form-label">菜单名称：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="fullname1" lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{{d.fullname1}}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" >
+            <div class="layui-col-lg6">
+                <label class="layui-form-label">菜单名称：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="fullname2" lay-verify="required" placeholder="" autocomplete="off" class="layui-input" >
+                </div>
+            </div>
+        </div>
+        <div class="layui-row layui-col-space10 layui-form-item">
+
+            <div class="layui-col-lg6">
+                <label class="layui-form-label">路径名称：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="fullname" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">页面路径</label>
+            <div class="layui-input-block">
+                <input type="text" name="jump" id="price"  autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+
+                <button class="layui-btn" lay-submit lay-filter="component-form-element">保存二级菜单</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</script>
+<style>
+    .orgbox{
+        display: inline-block;
+        height: 510px;
+        border: 1px solid #ddd;
+        overflow: auto;
+    }
+    .site-tips{
+        display: inline-block;
+        vertical-align: top;
+    }
+    body .layui-tree-skin-shihuang .layui-tree-branch{color: #EDCA50;}
+</style>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js" ></script>
+<script>
+
+    var treedata="";
+    $.ajax({
+        url:"/Ordering/querymenu2",
+
+        type:"Post",
+        dataType:"json",
+        success:function(datad){
+
+            treedata=datad.data;
+           console.log(treedata)
+            adddata(treedata)
+
+
+        },
+        error:function(data){
+
+        }
+    });
+    function adddata(treedata) {
+        layui.use(['tree', 'layer', 'table', 'form', 'laytpl'], function () {
+            console.log(treedata);
+            var $ = layui.$
+                , layer = layui.layer
+                , admin = layui.admin
+                , table = layui.table
+                , element = layui.element
+                , form = layui.form
+                , laytpl = layui.laytpl;
+
+            layui.tree({
+                elem: '#demo2' //指定元素
+                , skin: 'shihuang'
+                , target: '_blank' //是否新选项卡打开（比如节点返回href才有效）
+                , click: function (item) { //点击节点回调
+//                $('#demo2-view').html('当前节名称：'+ item.name + '<br>全部参数：'+ JSON.stringify(item));
+
+                    var data = item;
+                    var data2=JSON.parse(JSON.stringify(item));
+                    var menu=data2.name;
+                    var id=data2.id;
+
+                    if(id<10){
+                         $.ajax({
+                             url:"/Ordering/queryonemenu",
+                             type:"Post",
+                             data: { "tile": menu},
+                             dataType:"json",
+                             success:function(datad){
+                                 var len = datad.length;
+                                 for (var i = 0; i < len; i++) {
+                                     var data3 = {
+                                         tile: datad[i].tile,
+                                         menu: datad[i].menu,
+                                         icon:  [i].icon
+                                     };
+
+                                     var getTplForm = formBox.innerHTML, viewForm = document.getElementById('viewForm');
+                                     laytpl(getTplForm).render(data3, function (html) {
+                                         viewForm.innerHTML = html;
+                                     });
+                                 }
+                             },
+                             error:function(datad){
+
+                             }
+                         });
+
+                    }else{
+
+                        $.ajax({
+                            url:"/Ordering/queryonemenu1",
+                            type:"Post",
+                            data: { "tile": menu},
+                            dataType:"json",
+                            success:function(datad){
+                               var getTplForm = formBox1.innerHTML, viewForm = document.getElementById('viewForm');
+                                    laytpl(getTplForm).render(datad, function (html) {
+                                        viewForm.innerHTML = html;
+                                    });
+                            },
+                            error:function(datad){
+
+                            }
+                        });
+
+                    }
+
+
+                    form.render(null, 'component-form-element');
+                    element.render('breadcrumb', 'breadcrumb');
+
+                    // 可根据传入的参数，数据请求显示相应的数据
+
+                }
+
+                , nodes: treedata
+
+            });
+
+            form.on('submit(component-form-element)', function (data) {
+                var loadingFlag;
+
+                var menufrist=JSON.parse(JSON.stringify(data.field));
+                var menuname=menufrist.fullname1;
+                var model=menufrist.model;
+                var fullname=menufrist.fullname;
+                var fullname2=menufrist.fullname2;
+                var menuicon=menufrist.menuicon;
+                var jump=menufrist.jump;
+              if (model==1 || model==4){
+                  var $=layui.jquery;
+
+                  $.ajax({
+                      url:"/Ordering/addmenu1",
+                      type:"Post",
+                      data: { "tile": menuname,"menu": fullname,"icon": menuicon,"model":model,"fullname2":fullname2,"jump":jump},
+                      dataType:"json",
+                      beforeSend: function (XMLHttpRequest) {
+                          //注意，layer.msg默认3秒自动关闭，如果数据加载耗时比较长，需要设置time
+                          loadingFlag= layer.msg('正在创建，请稍候……', { icon: 16, shade: 0.01,shadeClose:false,time:60000 });
+                      },
+                      success:function(result){
+                          layer.close(loadingFlag);
+                          if (result.code ==0) {
+
+                              layer.msg('已创建');
+                              window.parent.location.reload();
+
+                          } else {
+                              layer.msg("创建失败")
+                          }
+                     },
+                      error:function(data){
+                          layer.msg("请求失败")
+                      }
+                  });
+              }else {
+                  layer.msg(menufrist)
+              }
+
+                return false;
+            });
+
+            form.on('submit(component-form-elemen)', function (data) {
+                layer.msg(JSON.stringify(data.field));
+                var data2=data.field;
+                var getTplForm = formBox2.innerHTML, viewForm = document.getElementById('viewForm');
+                laytpl(getTplForm).render(data2, function (html) {
+                    viewForm.innerHTML = html;
+                });
+
+                return false;
+            });
+            form.on('submit(component-form-elem)', function (data) {
+                layer.msg(JSON.stringify(data.field));
+                var data2=JSON.parse(JSON.stringify(data.field));
+                var title=data2.fullname1;
+                var model=data2.model;
+                $.ajax({
+                    url:"/Ordering/removemenu",
+                    type:"Post",
+                    data: { "title": title,"model":model},
+                    dataType:"json",
+                    success:function(datad){
+                        layer.msg('已删除');
+                        window.parent.location.reload();
+                    },
+                    error:function(datad){
+                        layer.msg('已删除');
+                        window.parent.location.reload();
+
+                    }
+                });
+
+
+
+                return false;
+            });
+        });
+    }
+</script>

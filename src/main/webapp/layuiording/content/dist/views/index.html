@@ -1,0 +1,260 @@
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8">
+            <div class="layui-row layui-col-space15">
+
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+
+                        <div class="layui-card-body">
+
+                            <div class="layui-carousel layadmin-carousel layadmin-backlog">
+                                <div carousel-item>
+                                    <ul class="layui-row layui-col-space10">
+                                        <li class="layui-col-xs6">
+                                            <a href="javascript:;" onclick="layer.tips('不跳转', this, {tips: 3});" class="layadmin-backlog-body">
+
+                                            <h3>今日订单数量</h3>
+                                                <p><cite id="ordingcount">66</cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a href="javascript:;" onclick="layer.tips('不跳转', this, {tips: 3});" class="layadmin-backlog-body">
+
+                                            <h3>昨日订单量</h3>
+                                                <p><cite id="ordingcount2">12</cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a href="javascript:;" onclick="layer.tips('不跳转', this, {tips: 3});" class="layadmin-backlog-body">
+                                                <h3>今日订单总金额</h3>
+                                                <p><cite id="ordingprice">99</cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a href="javascript:;" onclick="layer.tips('不跳转', this, {tips: 3});" class="layadmin-backlog-body">
+                                                <h3>昨日订单总金额</h3>
+                                                <p><cite id="ordingprice2">20</cite></p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <ul class="layui-row layui-col-space10">
+                                        <li class="layui-col-xs6">
+                                            <a href="javascript:;" class="layadmin-backlog-body">
+                                                <h3>待审友情链接</h3>
+                                                <p><cite style="color: #FF5722;">5</cite></p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+
+                        <div class="layui-card-body">
+
+                            <div id="echartsMap" class="layui-carousel layadmin-carousel layadmin-backlog">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">数据概览</div>
+                        <div class="layui-card-body">
+
+                            <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade" lay-filter="LAY-index-dataview">
+                                <div carousel-item id="LAY-index-dataview">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<script type="text/javascript" src="js/jquery-1.11.3.min.js" ></script>
+<script type="text/javascript" src="framework/echarts.min.js" ></script>
+<script type="text/javascript" src="js/backHome.js" ></script>
+<script src="js/jquery.tips.js"></script>
+
+<script>
+    var dom = document.getElementById("echartsMap");
+    var myChart = echarts.init(dom);
+    var app = {};
+
+    $.ajax({
+        url: "/Ordering/querylistxlall",
+        type: 'post',
+        dataType: "json",
+        success: function (result) {
+
+            if (result.ordingcount >0) {
+                $("#ordingcount").text(result.ordingcount)
+                $("#ordingprice").text(result.ordingprice)
+                //
+            } else {
+                $("#ordingcount").text(0)
+                $("#ordingprice").text(0)
+            }
+            if(result.ordingcount2>0){
+                $("#ordingcount2").text(result.ordingcount2)
+                $("#ordingprice2").text(result.ordingprice2)
+            }else{
+                $("#ordingcount2").text(0)
+                $("#ordingprice2").text(0)
+            }
+            var arr1 = new Array();
+            var arr2 = new Array();
+            var len = result.data.length;
+
+            for (var i = 0; i < len; i++) {
+                arr1.push(result.data[i].foodname)
+                arr2.push(result.data[i].countt)
+
+
+
+            }
+
+
+            adddata(arr1,arr2)
+
+        }
+
+    })
+
+
+    // echartsMap("echartsMap",BJData);
+    option = null;
+    app.title = '世界人口总量 - 条形图';
+    function adddata(arr1,arr2) {
+
+        option = {
+            title: {
+                text: '本月销量TOP10'
+
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            // legend: {
+            //     data: ['2011年', '2012年']
+            // },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '1%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value',
+                axisLine: {
+                    show: false,
+                    lineStyle: {
+                        color: '#9ac0cd'
+                    }
+                },
+                axisLabel: {
+                    color: '#9ac0cd'
+                },
+
+                boundaryGap: [0, 0.01]
+            },
+            yAxis: {
+                type: 'category',
+                axisLine: {
+                    show: false,
+                    lineStyle: {
+                        color: '#21c667'
+                    }
+                },
+                axisLabel: {
+                    color: '#9ac0cd'
+                },
+
+                data:
+                arr1
+                //["黑椒可乐牛排", "黑椒可乐牛排", "黑椒可乐牛排"]
+                // [" 黑椒可乐牛排"," 黄金香酥鸡块"," E"]
+            },
+
+            series: [
+                // {
+                //     name: '2011年',
+                //     type: 'bar',
+                //     data: [50, 40, 30, 20, 10, 100]
+                // },
+                {
+
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            //好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
+                            color: function (params) {
+                                // build a color map as your need.
+                                var colorList = [
+                                    '#21c667', '#21c667', '#FCCE10', '#E87C25', '#27727B',
+                                    '#FE8463', '#9BCA63', '#FAD860', '#F3A43B', '#60C0DD',
+                                    '#D7504B', '#C6E579', '#F4E001', '#F0805A', '#26C0C0'
+                                ];
+                                return colorList[params.dataIndex]
+                            },
+                            //以下为是否显示，显示位置和显示格式的设置了
+                            label: {
+                                show: false,
+                                position: 'top',
+//                             formatter: '{c}'
+                                formatter: '{b}\n{c}'
+                            }
+                        }
+                    },
+                    barGap: '5',
+                    barWidth: 20,
+                    data: arr2
+                }
+            ]
+        };
+        myChart.setOption(option, true);
+    }
+
+
+
+</script>
+<script>
+    //加载 controller 目录下的对应模块
+    /*
+
+     小贴士：
+     这里 console 模块对应 的 console.js 并不会重复加载，
+     然而该页面的视图则是重新插入到容器，那如何保证能重新来控制视图？有两种方式：
+     1): 借助 layui.factory 方法获取 console 模块的工厂（回调函数）给 layui.use
+     2): 直接在 layui.use 方法的回调中书写业务代码，即:
+     layui.use('console', function(){
+     //同 console.js 中的 layui.define 回调中的代码
+     });
+
+     这里我们采用的是方式1。其它很多视图中采用的其实都是方式2，因为更简单些，也减少了一个请求数。
+
+     */
+   layui.use('console', layui.factory('console'));
+
+
+</script>
+

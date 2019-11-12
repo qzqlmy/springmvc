@@ -1,0 +1,56 @@
+.login-form{
+
+    font-size:2em;
+    color:#737373;
+    font-weight:100;
+    text-transform:uppercase;
+
+    margin-bottom:2em;
+    padding:100px 0px 0px 0px;
+}
+.login-ic {
+    background: rgba(255, 255, 255, 0.32);
+    margin-bottom:1.5em;
+    padding: 8px;
+}
+.login-ic input[type="text"],.login-ic  input[type="password"] {
+    float: left;
+    background: none;
+    outline: none;
+    font-size: 15px;
+    font-weight: 400;
+    color: #8B1C62;
+    padding: 10px 16px;
+    border: none;
+    border-left: 1px solid #5F9EA0;
+    width: 82%;
+    display: inline-block;
+    margin-left: 7px;
+}
+.log-bwn {
+    text-align: center;
+}
+input[type="fil"]{
+    position: absolute;
+    right: 0; top: 0; font-size: 100px; opacity: 0; filter: alpha(opacity=0); } a.file-button { display: inline-block; width: 100px; height: 40px; background: #00b3ee; position: relative; overflow: hidden; text-align: center; color: #fff; border-radius: 3px; line-height: 40px; text-decoration: none; float: left; } #file_name { line-height: 40px; float: left; padding-left: 15px; }
+
+.snnnn {
+    /*font-size: 15px;*/
+    /*font-weight: 700;*/
+
+    padding: 0px 0;
+
+    /*display: inline-block;*/
+    /*width: 100%;*/
+    /*outline:none;*/
+
+    /*cursor:pointer;*/
+    /*text-transform:uppercase;*/
+}
+.log-bwn input[type="submit"]:hover{
+    transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    border:2px solid #FFFFFF;
+}
